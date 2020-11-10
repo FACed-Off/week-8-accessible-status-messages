@@ -2,12 +2,23 @@ import h from "./create-element.js";
 import { getDogs, deleteDog } from "./api.js";
 
 const dogsGridEl = h("div", { className: "grid" });
+const dogsStatusEl = h("div", {"aria-live":"polite"})
+dogsGridEl.append(dogsStatusEl)
 
 // render the initial UI to the page
 const app = document.querySelector("#app");
 app.append(dogsGridEl);
 
 getDogs().then((dogs) => {
+  const dogEls = dogs.map(Dog);
+  dogsGridEl.append(...dogEls);
+});
+
+// show loading message
+dogsStatusEl.append("Loading dogs...");
+getDogs().then((dogs) => {
+  // remove loading message
+  dogsStatusEl.remove();
   const dogEls = dogs.map(Dog);
   dogsGridEl.append(...dogEls);
 });

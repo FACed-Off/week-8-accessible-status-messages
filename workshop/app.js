@@ -25,10 +25,11 @@ getDogs().then((dogs) => {
 
 // takes a dog object as its argument
 function Dog({ id, name, image }) {
+  const status = h("div", {"aria-live":"assertive"})
   return h(
     "div",
     { className: "dog" },
-    h("h3", {}, name, DeleteButton({ id, name })),
+    h("h3", {}, name, DeleteButton({ id, name }), status),
     h("img", { src: image, alt: "", width: 400, height: 400 })
   );
 }
@@ -40,9 +41,17 @@ function DeleteButton({ id, name }) {
       "aria-label": `Delete ${name}`,
       onclick: (event) => {
         const button = event.currentTarget;
-        deleteDog(id).then(() => button.parentElement.parentElement.remove());
+        deleteDog(id).then(() => button.parentElement.parentElement.remove())
+        .catch((error) => {
+          console.log(error);
+          button.nextElementSibling.textContent = `Something went wrong deleting ${name}`;
+          window.setTimeout(()=>{
+            button.nextElementSibling.textContent=""
+          }, 5000)
+        })
       },
     },
     h("img", { src: "trash.svg", width: 24, height: 24, alt: "" })
   );
 }
+

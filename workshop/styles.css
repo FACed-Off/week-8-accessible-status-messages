@@ -54,3 +54,30 @@ img {
   gap: 0.5rem;
   align-content: start;
 }
+.notify {
+  /* position relative to the viewport */
+  position: fixed;
+  /* as wide as its content requires */
+  width: max-content;
+  /* 2rem from the bottom of the viewport */
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  /* centered */
+  margin: 0 auto;
+
+  /* make it pretty, not required */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 2px hsla(200, 10%, 20%, 0.4),
+    0 6px 16px -2px hsla(200, 10%, 20%, 0.4);
+  border-radius: 0.125rem;
+  background-color: var(--bg);
+  /* initially slide it down off screen by its height + 2rem (the distance from the bottom) */
+  transform: translateY(calc(100% + 2rem));
+  /* this animates any changes to the translate */
+  transition: transform 0.3s;
+}
+
+.notify.active {
+  transform: translateY(0);
+}

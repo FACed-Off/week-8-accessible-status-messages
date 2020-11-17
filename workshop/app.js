@@ -34,6 +34,14 @@ function Dog({ id, name, image }) {
   );
 }
 
+function notify(message){
+  notificationEl.classList.add("active")
+  notificationEl.textContent = message
+  window.setTimeout(() => {
+    notificationEl.classList.remove("active")
+  }, 5000);
+}
+
 function DeleteButton({ id, name }) {
   return h(
     "button",
@@ -44,10 +52,7 @@ function DeleteButton({ id, name }) {
         deleteDog(id).then(() => button.parentElement.parentElement.remove())
         .catch((error) => {
           console.log(error);
-          button.nextElementSibling.textContent = `Something went wrong deleting ${name}`;
-          window.setTimeout(()=>{
-            button.nextElementSibling.textContent=""
-          }, 5000)
+          notify(`Something went wrong deleting ${name}`)
         })
       },
     },
@@ -55,3 +60,7 @@ function DeleteButton({ id, name }) {
   );
 }
 
+const notificationEl = h("div", {"aria-live": "assertive", className: "notify"
+}, "Some fake error message");
+
+app.append(dogsGridEl, notificationEl)
